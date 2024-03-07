@@ -1,0 +1,16 @@
+datasource db {
+  url      = env("DATABASE_URL")
+  provider = "mysql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model producto {
+  codigo        String    @id
+  video         Boolean
+  id_categoria  Int       @map("id_categoria")
+
+  @@map(name: "producto")
+}

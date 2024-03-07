@@ -1,0 +1,25 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "bulma": "^0.9.4",
+    "nuxt": "^3.10.3",
+    "pinia": "^2.1.7",
+    "prisma": "^5.10.2",
+    "vue": "^3.4.19",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@pinia/nuxt": "^0.5.1",
+    "@prisma/client": "^5.10.2",
+    "sass": "^1.71.1"
+  }
+}
