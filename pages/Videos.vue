@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import {VideoModalData} from "~/utils/VideoModalData";
 
+const router = useRouter();
 const videoModalData = ref<VideoModalData | null>(null);
 const fileLoader = useFileLoader();
-const {data: videos, refresh: getVideos} = useFetch('/api/videos');
 const notifications = useNotifications();
 const uploading = ref(false);
+const {data: videos, refresh: getVideos, error} = useFetch('/api/videos');
 
+watch(error, async (n) => {
+  if(n?.statusCode === 401) await router.push('/login');
+})
 function showModal(){
   videoModalData.value = new VideoModalData();
 }
@@ -30,7 +34,7 @@ async function uploadVideo(){
     videoModalData.value = null;
     await getVideos();
   } catch (e: any) {
-    notifications.push(e.statusMessage, 'danger');
+    notifications.push(e.message, 'danger');
   } finally {
     uploading.value = false;
   }
@@ -65,7 +69,7 @@ function removeDeletedVideo(codigo: string){
           <div class="field column is-half">
             <label class="label">Código</label>
             <div class="control">
-              <input class="input" type="text" v-model="videoModalData.codigo">
+              <input class="input" type="text" v-model="videoModalData!.codigo">
             </div>
           </div>
           <div class="file column is-half">

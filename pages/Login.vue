@@ -7,21 +7,20 @@ definePageMeta({
 const router = useRouter();
 const password = ref('');
 const notifications = useNotifications();
-const {data, status, error, refresh} = await useFetch('/api/login', {
-  method: 'POST',
-  body: {password},
-  immediate: false,
-  watch: false,
-  onResponse({response}){
-    if(response.status === 204)
-      router.push({path: '/videos'});
-  },
-  onResponseError({response}){
-    notifications.push(response._data.statusMessage, 'danger');
-  }
+const loggingIn = ref(false);
+useFetch('/api/login', {
+  method: 'delete'
 });
-function login(){
-  refresh();
+
+async function login(){
+  await $fetch('/api/login', {
+    method: 'post',
+    body: { password: password.value },
+    async onResponse({response}){
+      if(response.status === 204) await router.push({path: '/videos'});
+      if(response.status === 401) notifications.push(response._data.message, 'danger');
+    }
+  });
 }
 </script>
 
@@ -34,7 +33,7 @@ function login(){
     </div>
     <div class="field">
       <p class="control has-text-centered">
-        <button type="submit" class="button is-success" :class="{'is-loading': status === 'pending'}">
+        <button type="submit" class="button is-success" :class="{'is-loading': loggingIn}">
           Login
         </button>
       </p>

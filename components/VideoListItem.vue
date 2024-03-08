@@ -7,7 +7,7 @@ const deletingVideo = ref(false);
 const play = ref(false);
 const notifications = useNotifications();
 
-async function deleteVideo(codigo: string){
+async function deleteVideo(){
   try {
     deletingVideo.value = true;
     await $fetch(`/api/videos/${product.codigo}`, {
@@ -16,7 +16,7 @@ async function deleteVideo(codigo: string){
     emit('videoDeleted');
   } catch (e: any) {
     console.log(e);
-    notifications.push(e.statusMessage, 'danger');
+    notifications.push(e.message, 'danger');
   } finally {
     deletingVideo.value = false;
   }
@@ -40,7 +40,7 @@ async function deleteVideo(codigo: string){
         </button>
         <button class="button is-white"
                 aria-label="more options"
-                @click="deleteVideo(product.codigo)"
+                @click="deleteVideo()"
                 :class="{'is-loading': deletingVideo}">
             <span class="icon is-medium">
               <i class="mdi mdi-24px mdi-trash-can" aria-hidden="true"></i>

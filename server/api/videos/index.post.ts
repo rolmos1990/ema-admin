@@ -2,6 +2,12 @@ import { PrismaClient } from '@prisma/client';
 import fs from 'fs';
 const prisma = new PrismaClient();
 export default defineEventHandler(async (event) => {
+    const user = getCookie(event, 'ema_user');
+    console.log(user);
+    if(!user) throw createError({
+        statusCode: 401,
+        message: 'Inicie sesión',
+    });
     const body = await readBody(event);
     const codigo = body.codigo.toUpperCase();
     const video = body.video.split('base64,')[1];
@@ -10,7 +16,7 @@ export default defineEventHandler(async (event) => {
     });
     if(!producto) throw createError({
         statusCode: 404,
-        statusMessage: `${codigo} no encontrado`,
+        message: `${codigo} no encontrado`,
     });
     fs.writeFileSync(`${process.env.VIDEO_DIR}/${codigo}.mp4`, video, {
         encoding: 'base64'
