@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const {product} = defineProps(['product']);
+const {product} = defineProps({
+  product: {
+    required: true,
+    type: Object as PropType<{codigo: string; id_categoria: string}>
+  }
+});
 const emit = defineEmits(['videoDeleted'])
 const deletingVideo = ref(false);
 const play = ref(false);
