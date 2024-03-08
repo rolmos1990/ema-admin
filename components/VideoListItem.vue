@@ -8,18 +8,18 @@ const play = ref(false);
 const notifications = useNotifications();
 
 async function deleteVideo(){
-  try {
-    deletingVideo.value = true;
-    await $fetch(`/api/videos/${product.codigo}`, {
-      method: 'delete'
-    });
-    emit('videoDeleted');
-  } catch (e: any) {
-    console.log(e);
-    notifications.push(e.message, 'danger');
-  } finally {
-    deletingVideo.value = false;
-  }
+  deletingVideo.value = true;
+  await $fetch(`/api/videos/${product.codigo}`, {
+    method: 'delete',
+    onResponse({response}){
+      if(response.status !== 200){
+        notifications.push(response._data.message, 'danger');
+      }else{
+        emit('videoDeleted');
+      }
+      deletingVideo.value = false;
+    }
+  });
 }
 </script>
 

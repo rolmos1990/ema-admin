@@ -13,12 +13,14 @@ useFetch('/api/login', {
 });
 
 async function login(){
+  loggingIn.value = true;
   await $fetch('/api/login', {
     method: 'post',
     body: { password: password.value },
     async onResponse({response}){
       if(response.status === 204) await router.push({path: '/videos'});
       if(response.status === 401) notifications.push(response._data.message, 'danger');
+      loggingIn.value = false;
     }
   });
 }

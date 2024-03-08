@@ -22,22 +22,23 @@ async function loadVideo(event: any){
 }
 
 async function uploadVideo(){
-  try {
-    uploading.value = true;
-    await $fetch('/api/videos', {
-      method: 'post',
-      body: {
-        codigo: videoModalData.value?.codigo,
-        video: videoModalData.value?.video
+  uploading.value = true;
+  await $fetch('/api/videos', {
+    method: 'post',
+    body: {
+      codigo: videoModalData.value?.codigo,
+      video: videoModalData.value?.video
+    },
+    async onResponse({response}){
+      if(response.status !== 200){
+        notifications.push(response._data.message, 'danger');
+      }else{
+        videoModalData.value = null;
+        await getVideos();
       }
-    });
-    videoModalData.value = null;
-    await getVideos();
-  } catch (e: any) {
-    notifications.push(e.message, 'danger');
-  } finally {
-    uploading.value = false;
-  }
+      uploading.value = false;
+    }
+  });
 }
 
 function removeDeletedVideo(codigo: string){
