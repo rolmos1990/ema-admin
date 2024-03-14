@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {VideoModalData} from "~/utils/VideoModalData";
 
-const router = useRouter();
 const videoModalData = ref<VideoModalData | null>(null);
 const fileLoader = useFileLoader();
 const notifications = useNotifications();
@@ -9,7 +8,7 @@ const uploading = ref(false);
 const {data: videos, refresh: getVideos, error} = useFetch('/api/videos');
 
 watch(error, async (n) => {
-  if(n?.statusCode === 401) await router.push('/login');
+  if(n?.statusCode === 401) await navigateTo('/login');
 })
 function showModal(){
   videoModalData.value = new VideoModalData();

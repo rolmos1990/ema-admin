@@ -4,7 +4,6 @@ import {useNotifications} from "~/stores/notification";
 definePageMeta({
   layout: 'login'
 });
-const router = useRouter();
 const password = ref('');
 const notifications = useNotifications();
 const loggingIn = ref(false);
@@ -18,7 +17,7 @@ async function login(){
     method: 'post',
     body: { password: password.value },
     async onResponse({response}){
-      if(response.status === 204) await router.push({path: '/videos'});
+      if(response.status === 204) await navigateTo('/videos');
       if(response.status === 401) notifications.push(response._data.message, 'danger');
       loggingIn.value = false;
     }
