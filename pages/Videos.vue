@@ -5,11 +5,22 @@ const videoModalData = ref<VideoModalData | null>(null);
 const fileLoader = useFileLoader();
 const notifications = useNotifications();
 const uploading = ref(false);
-const {data: videos, refresh: getVideos, error} = useFetch('/api/videos');
+const videos = ref([]);
 
-watch(error, async (n) => {
-  if(n?.statusCode === 401) await navigateTo('/login');
-})
+async function getVideos(){
+  await $fetch('/api/videos', {
+    async onResponse({response}){
+      if(response.status === 200) {
+        videos.value = response._data;
+      }
+      if(response.status === 401) {
+        notifications.push(response._data.message, 'danger');
+        await navigateTo('/login');
+      }
+    }
+  });
+}
+
 function showModal(){
   videoModalData.value = new VideoModalData();
 }
@@ -44,6 +55,10 @@ function removeDeletedVideo(codigo: string){
   console.log('remove', codigo);
   if(videos.value) videos.value = videos.value.filter(v => v.codigo !== codigo);
 }
+
+onMounted(async () => {
+  await getVideos();
+});
 </script>
 
 <template>
