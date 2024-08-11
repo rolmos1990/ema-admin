@@ -105,7 +105,7 @@ onMounted(async () => {
             </div>
           </div>
           <div class="file column">
-            <label class="label">Archivo</label>
+            <label class="label">Archivo de Video</label>
             <label class="file-label">
               <input class="file-input" type="file" name="resume" accept=".mp4" @change="loadVideo">
               <span class="file-cta">

@@ -12,7 +12,11 @@ const deletingVideo = ref(false);
 const play = ref(false);
 const playAudio = ref(false);
 const notifications = useNotifications();
-const url_testimonios = "https://www.emamodas.com/video/";
+const url_testimonios = "https://www.emamodas.com/video";
+
+function getImagePath(imageName: string) {
+  return require(`~/assets/${imageName}`);
+}
 
 async function deleteVideo(){
   deletingVideo.value = true;
@@ -27,6 +31,18 @@ async function deleteVideo(){
       deletingVideo.value = false;
     }
   });
+}
+
+function mostrarMedio(foto, video, audio) {
+  if (foto && foto !== '') {
+    return `${url_testimonios}/${product.id}_foto_800.jpg`;
+  } else if (video) {
+    return 'images/default_video.png';
+  } else if (audio) {
+    return 'images/default_audio.png';
+  } else {
+    return ``;
+  }
 }
 </script>
 
@@ -61,9 +77,9 @@ async function deleteVideo(){
         </button>
       </header>
       <div class="card-image">
-        <img style="width:286px;height:382px;" :src="`${url_testimonios}/${product.id}_foto.mp4`"
-             :alt="product.id"
-             v-if="!play" />
+        <img style="width:286px;height:382px;"
+             :src="mostrarMedio(product.foto, product.video, product.audio)"
+             :alt="product.id" v-if="!play" />
         <video autoplay @ended="play = false" v-else>
           <source type="video/mp4"
                   :src="`${url_testimonios}/${product.id}_video.mp4`" />
@@ -75,8 +91,8 @@ async function deleteVideo(){
             @ended="playAudio = false"
         >
           <source
-              type="audio/mp4"
-              :src="`${url_testimonios}/${product.id}_audio.mp4`"
+              type="audio/ogg"
+              :src="`${url_testimonios}/${product.id}_audio.ogg`"
           />
           Your browser does not support the audio element.
         </audio>

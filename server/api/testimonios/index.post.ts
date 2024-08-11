@@ -1,5 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import fs from 'fs';
+import Jimp from 'jimp';
+
 const prisma = new PrismaClient();
 export default defineEventHandler(async (event) => {
     const user = getCookie(event, 'ema_user');
@@ -42,9 +44,21 @@ export default defineEventHandler(async (event) => {
     }
 
     if (!!foto) {
+        const fotoBuffer = Buffer.from(foto, 'base64');
+
+        const image = await Jimp.read(fotoBuffer);
+
+
         fs.writeFileSync(`${process.env.TESTIMONIOS_DIR}/${id}_foto.mp4`, foto, {
             encoding: 'base64'
         });
+
+        await image.resize(238, 357).writeAsync(`${process.env.TESTIMONIOS_DIR}/${id}_foto_238.jpg`);
+
+        await image.resize(400, 600).writeAsync(`${process.env.TESTIMONIOS_DIR}/${id}_foto_400.jpg`);
+
+        await image.resize(800, 1200).writeAsync(`${process.env.TESTIMONIOS_DIR}/${id}_foto_800.jpg`);
+
     }
 
     return createdTestimonio;
