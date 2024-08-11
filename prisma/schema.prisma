@@ -14,3 +14,14 @@ model producto {
 
   @@map(name: "producto")
 }
+
+model testimonios {
+  id      Int     @id @default(autoincrement())
+  nombre  String? @db.VarChar(100)
+  video   Boolean? @db.TinyInt
+  audio   Boolean? @db.TinyInt
+  foto    Boolean? @db.TinyInt
+  comentario String? @db.Text
+  @@map(name: "testimonios")
+}
+

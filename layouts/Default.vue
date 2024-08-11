@@ -11,7 +11,10 @@
       <div class="navbar-menu">
         <div class="navbar-start">
           <NuxtLink to="/videos" class="navbar-item">
-            Videos
+            <i class="mdi mdi-24px mdi-play"></i>&nbsp; Videos
+          </NuxtLink>
+          <NuxtLink to="/testimonios" class="navbar-item">
+            <i class="mdi mdi-24px mdi-account-voice"></i>&nbsp; Testimonios
           </NuxtLink>
         </div>
         <div class="navbar-end">
