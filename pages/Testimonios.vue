@@ -54,6 +54,7 @@ async function uploadVideo(){
       audio: testimonioModalData.value?.audio,
       foto: testimonioModalData.value?.foto,
       comentario: testimonioModalData.value?.comentario,
+      estrellas : testimonioModalData.value?.estrellas ?? 0,
     },
     async onResponse({response}){
       if(response.status !== 200){
@@ -154,6 +155,20 @@ onMounted(async () => {
             <label class="label">Testimonio</label>
             <div class="control">
               <textarea class="textarea" v-model="testimonioModalData.comentario"></textarea>
+            </div>
+          </div>
+
+          <div class="field column is-full">
+            <label class="label">Estrellas</label>
+            <div class="control">
+              <div class="select">
+                <select v-model="testimonioModalData.estrellas">
+                  <option value="" disabled>Selecciona una calificación</option>
+                  <option v-for="n in 5" :key="n" :value="n">
+                    {{ n }} {{ n === 1 ? 'estrella' : 'estrellas' }}
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
 

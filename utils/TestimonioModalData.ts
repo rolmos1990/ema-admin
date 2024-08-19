@@ -4,4 +4,5 @@ export class TestimonioModalData{
     audio: string = '';
     foto: string = '';
     comentario: string = '';
+    estrellas: number = 0;
 }

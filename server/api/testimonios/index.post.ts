@@ -14,6 +14,7 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     const comentario = body.comentario;
     const nombre = body.nombre;
+    const estrellas = body.estrellas;
 
     const video = body.video.split('base64,')[1];
     const audio = body.audio.split('base64,')[1];
@@ -26,6 +27,7 @@ export default defineEventHandler(async (event) => {
             video: !!video,
             audio: !!audio,
             foto: !!foto,
+            estrellas: estrellas
         }
     });
 

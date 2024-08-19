@@ -105,6 +105,13 @@ function mostrarMedio(foto, video, audio) {
         </div>
       </footer>
     </div>
+    <div class="card-footer-item">
+      <div class="stars">
+        <div v-for="star in 5" :key="star" class="star" :class="{ filled: star <= product.estrellas }">
+          ★
+        </div>
+      </div>
+    </div>
   </li>
 </template>
 
@@ -130,5 +137,19 @@ function mostrarMedio(foto, video, audio) {
   overflow: hidden; /* Oculta el texto que desborda */
   white-space: nowrap; /* No permite el salto de línea */
   max-width: 200px; /* Asegura que el texto no se expanda fuera del contenedor */
+}
+.stars {
+  display: flex;
+  font-size: 1.5rem; /* Tamaño de las estrellas */
+}
+
+.star {
+  color: #d3d3d3; /* Color de estrellas vacías (gris claro) */
+  margin-right: 0.1rem; /* Espacio entre las estrellas */
+  transition: color 0.2s; /* Animación para el cambio de color */
+}
+
+.star.filled {
+  color: #ffc107; /* Color de estrellas llenas (amarillo) */
 }
 </style>
