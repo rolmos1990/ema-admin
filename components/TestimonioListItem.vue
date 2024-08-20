@@ -131,25 +131,25 @@ function mostrarMedio(foto, video, audio) {
   }
 }
 .comment-text {
-  font-size: 0.875rem; /* Tamaño de letra más pequeño */
-  color: #4a4a4a; /* Color gris oscuro */
-  text-overflow: ellipsis; /* Muestra los puntos suspensivos */
-  overflow: hidden; /* Oculta el texto que desborda */
-  white-space: nowrap; /* No permite el salto de línea */
-  max-width: 200px; /* Asegura que el texto no se expanda fuera del contenedor */
+  font-size: 0.875rem;
+  color: #4a4a4a;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 200px;
 }
 .stars {
   display: flex;
-  font-size: 1.5rem; /* Tamaño de las estrellas */
+  font-size: 1.5rem;
 }
 
 .star {
-  color: #d3d3d3; /* Color de estrellas vacías (gris claro) */
-  margin-right: 0.1rem; /* Espacio entre las estrellas */
-  transition: color 0.2s; /* Animación para el cambio de color */
+  color: #d3d3d3;
+  margin-right: 0.1rem;
+  transition: color 0.2s;
 }
 
 .star.filled {
-  color: #ffc107; /* Color de estrellas llenas (amarillo) */
+  color: #ffc107;
 }
 </style>
