@@ -23,6 +23,7 @@ model testimonios {
   foto    Boolean? @db.TinyInt
   comentario String? @db.Text
   estrellas  Int     @default(0)
+  thumbnail  String? @db.VarChar(255)
   @@map(name: "testimonios")
 }
 
