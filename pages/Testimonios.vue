@@ -26,10 +26,19 @@ function showModal(){
   testimonioModalData.value = new TestimonioModalData();
 }
 
-async function loadVideo(event: any){
-  if(testimonioModalData.value) testimonioModalData.value.video = '';
-  const data = await fileLoader.getDataURL(event.target.files[0]);
-  if(testimonioModalData.value !== null) testimonioModalData.value.video = data;
+async function loadVideo(event: any) {
+  if (testimonioModalData.value) {
+    testimonioModalData.value.video = '';
+    testimonioModalData.value.thumbnail = '';
+
+    const file = event.target.files[0];
+    const data = await fileLoader.getDataURL(file);
+    testimonioModalData.value.video = data;
+
+    // Capturamos el thumbnail en el segundo 1
+    const thumbnail = await captureThumbnail(file, 1);
+    testimonioModalData.value.thumbnail = thumbnail;
+  }
 }
 
 async function loadAudio(event: any){
@@ -44,6 +53,36 @@ async function loadFoto(event: any){
   if(testimonioModalData.value !== null) testimonioModalData.value.foto = data;
 }
 
+async function captureThumbnail(videoFile: File, timeInSeconds: number = 1): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const video = document.createElement('video');
+    video.src = URL.createObjectURL(videoFile);
+    video.currentTime = timeInSeconds;
+
+    video.addEventListener('loadeddata', () => {
+      video.currentTime = timeInSeconds;
+    });
+
+    video.addEventListener('seeked', () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataURL = canvas.toDataURL('image/jpeg');
+        resolve(dataURL);
+      } else {
+        reject(new Error('No se pudo capturar la miniatura'));
+      }
+    });
+
+    video.addEventListener('error', (error) => {
+      reject(new Error('Error al cargar el video'));
+    });
+  });
+}
+
 async function uploadVideo(){
   uploading.value = true;
   await $fetch('/api/testimonios', {
@@ -54,12 +93,13 @@ async function uploadVideo(){
       audio: testimonioModalData.value?.audio,
       foto: testimonioModalData.value?.foto,
       comentario: testimonioModalData.value?.comentario,
-      estrellas : testimonioModalData.value?.estrellas ?? 0,
+      estrellas: testimonioModalData.value?.estrellas ?? 0,
+      thumbnail: testimonioModalData.value?.thumbnail, // Incluye la miniatura
     },
     async onResponse({response}){
       if(response.status !== 200){
         notifications.push(response._data.message, 'danger');
-      }else{
+      } else {
         testimonioModalData.value = null;
         await getVideos();
       }
@@ -177,6 +217,12 @@ onMounted(async () => {
 
         <hr />
         <h3>Video Preview </h3>
+
+        <h2>Video Thumbnail </h2>
+        <div class="thumbnail-preview" v-if="testimonioModalData.thumbnail">
+          <img :src="testimonioModalData.thumbnail" alt="Video Thumbnail" />
+        </div>
+
         <div class="video-preview" v-if="testimonioModalData.video">
           <video controls>
             <source type="video/mp4" :src="testimonioModalData.video">
@@ -215,5 +261,16 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   height: 500px;
+}
+.thumbnail-preview {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  height: 400px;
+}
+
+.thumbnail-preview img {
+  max-width: 100%;
+  height: auto;
 }
 </style>

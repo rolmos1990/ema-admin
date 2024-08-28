@@ -37,7 +37,7 @@ function mostrarMedio(foto, video, audio) {
   if (foto && foto !== '') {
     return `${url_testimonios}/${product.id}_foto_800.jpg`;
   } else if (video) {
-    return 'images/default_video.png';
+    return `${url_testimonios}/${product.id}_video_thumbnail.jpg`;
   } else if (audio) {
     return 'images/default_audio.png';
   } else {

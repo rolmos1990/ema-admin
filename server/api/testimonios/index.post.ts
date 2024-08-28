@@ -19,6 +19,7 @@ export default defineEventHandler(async (event) => {
     const video = body.video.split('base64,')[1];
     const audio = body.audio.split('base64,')[1];
     const foto = body.foto.split('base64,')[1];
+    const thumbnail = body.thumbnail.split('base64,')[1];
 
     const createdTestimonio = await prisma.testimonios.create({
         data: {
@@ -35,6 +36,9 @@ export default defineEventHandler(async (event) => {
 
     if (!!video) {
         fs.writeFileSync(`${process.env.TESTIMONIOS_DIR}/${id}_video.mp4`, video, {
+            encoding: 'base64'
+        });
+        fs.writeFileSync(`${process.env.TESTIMONIOS_DIR}/${id}_video_thumbnail.jpg`, thumbnail, {
             encoding: 'base64'
         });
     }

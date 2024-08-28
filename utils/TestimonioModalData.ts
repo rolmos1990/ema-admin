@@ -5,4 +5,5 @@ export class TestimonioModalData{
     foto: string = '';
     comentario: string = '';
     estrellas: number = 0;
+    thumbnail: string = '';
 }
